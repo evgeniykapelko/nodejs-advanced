@@ -6,9 +6,14 @@
   "bin": {
     "weather": "weather.js"
   },
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Eugene Kapelko",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.1.2",
+    "dedent-js": "^1.0.1"
+  }
 }

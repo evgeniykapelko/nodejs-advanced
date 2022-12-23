@@ -5,6 +5,11 @@ import { promises } from 'fs';
 
 const filePath = join(homedir(), 'wether-data.json');
 
+const TOKEN_DICTIONATY = {
+    token: 'token',
+    city: 'city'
+}
+
 const saveKeyValue = async (key, value) => {
     let data = {};
 
@@ -38,4 +43,4 @@ const isExist = async (path) => {
     }
 }
 
-export { saveKeyValue, getKeyValue };
+export { saveKeyValue, getKeyValue, TOKEN_DICTIONATY };

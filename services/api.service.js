@@ -2,6 +2,10 @@ import axios from 'axios';
 import https from 'https';
 import { getKeyValue, TOKEN_DICTIONATY } from './storage.service.js';
 
+
+// const getIcon = (icon) = {
+//     //
+// }
 const getWeather = async (city) => {
     //return new Promise();
     const token = await getKeyValue(TOKEN_DICTIONATY.token);

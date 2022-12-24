@@ -2,8 +2,8 @@
 
 import { getArgs } from "./helpers/args.js";
 import { getWeather } from "./services/api.service.js";
-import { printHelp, printSuccess, printError } from "./services/log.service.js";
-import { saveKeyValue, TOKEN_DICTIONATY } from "./services/storage.service.js";
+import { printHelp, printSuccess, printError, printWeather } from "./services/log.service.js";
+import { getKeyValue, saveKeyValue, TOKEN_DICTIONATY } from "./services/storage.service.js";
 
 const saveToken = async (token) => {
     if (!token.length) {
@@ -20,10 +20,26 @@ const saveToken = async (token) => {
     }
 }
 
+const saveCity = async (city) => {
+    if (!city) {
+        printError('No city');
+        return;
+    }
+
+    try {
+        await saveKeyValue(TOKEN_DICTIONATY.city, city);
+        printSuccess('City has beeen saved');
+    } catch (error) {
+        printError('Something went wrong. Please try again.');
+        printError(error.message);
+    }
+}
+
 const getForcast = async () => {
     try {
-        const weather = await getWeather('kiyv');
-            console.log(weather);
+        const city = process.env.CITY ?? await getKeyValue(TOKEN_DICTIONATY.city);
+        const weather = await getWeather(city);
+        printWeather(weather, weather.weather[0].icon);
     } catch (e) {
         if (e?.response?.status == 404) {
             printError('Incorrect place');
@@ -37,20 +53,20 @@ const getForcast = async () => {
 
 const initCLI = () => {
     const args = getArgs(process.argv)
-    console.log(args);
 
     if (args.h) {
-        printHelp();
+        return printHelp();
     }
 
     if (args.s) {
+        return saveCity(args.s);
     }
 
     if (args.t) {
-       saveToken(args.t);
+        return saveToken(args.t);
     }
 
-    getForcast();
+    return getForcast();
 }
 
 initCLI();
